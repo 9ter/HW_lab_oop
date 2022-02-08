@@ -30,11 +30,12 @@ public class HK416 {
         list.add(new Figure("Shion","white"));
         list.add(new Figure("Ayame","white"));
         list.add(new Figure("Choco","white"));
-        list.add(new Figure("Chocos","white"));
+       // list.add(new Figure("Chocos","white"));
         list.add(new Figure("Subaru","white"));
         
         board.Setboard(list); // ส่งชื่อผู้เล่น และ ฝ่าย
         // board.Move("ชื่อผู่เล่น","file",rank)
+     
         board.Move("Mel","A",0);
         board.Move("Fubuki","B",0);
         board.Move("Rosenthal","C",0);
@@ -46,7 +47,12 @@ public class HK416 {
         board.Move("Subaru","E",7);
        
         board.Info();
-       
+        board.Move("Subaru","G",7);
+        board.Move("Aqua","A",0);
+        board.Move("Haato","A",0);
+        
+        
+       board.Info();
 
         
         

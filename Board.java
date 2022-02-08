@@ -103,21 +103,32 @@ public void Setboard(){ // setGame
     
     if(Check_Position(char_count,rank) && Check_Input_name(num_player,figure_name)){ // เช็คค่าinput หาข้อผิดพลาด
         
-         figure_arrlist[0].identity = false;
+         /*figure_arrlist[0].identity = false;
          figure_arrlist[1].identity = false;
          figure_arrlist[4].identity = false;
-         figure_arrlist[5].identity = false;
+         figure_arrlist[5].identity = false;*/
+         
+         
          if(figure_arrlist[num_player].identity != false){ // ยังมีชีวิตอยู่
-             
+
               if(figure_arrlist[num_player].first_turn != false){ //ถ้า turn แรกจะไม่มีการเคียบอร์ด
               figure_arrlist[num_player].Move_fig(char_count,rank); // ผู้เล่นบันทึกตำแหน่งที่ให้ไป
               borad_[figure_arrlist[num_player].position_rank][figure_arrlist[num_player].position_file] = Insert(figure_arrlist[num_player].name_board); // บันทึกชื่อผู้เล่นบนกระดาน
               figure_arrlist[num_player].first_turn = false; //จบ first_turn
               }else{
               //ไม่ใช่ first_turn มีการเคลียช่องเก่าของผู้เล่น
-              borad_[figure_arrlist[num_player].position_rank][figure_arrlist[num_player].position_file] = Insert(); // เคลียช่องเก่า
-              figure_arrlist[num_player].Move_fig(char_count,rank); // ผู้เล่นบันทึกตำแหน่งที่ให้ไป
-              borad_[figure_arrlist[num_player].position_rank][figure_arrlist[num_player].position_file] = Insert(figure_arrlist[num_player].name_board); // บันทึกชื่อผู้เล่นบนกระดาน
+            
+              if(Check_Position_Board(figure_arrlist[num_player],rank,char_count)){ 
+               borad_[figure_arrlist[num_player].position_rank][figure_arrlist[num_player].position_file] = Insert(); // เคลียช่องเก่า
+               figure_arrlist[num_player].Move_fig(char_count,rank); // ผู้เล่นบันทึกตำแหน่งที่ให้ไป
+               borad_[figure_arrlist[num_player].position_rank][figure_arrlist[num_player].position_file] = Insert(figure_arrlist[num_player].name_board); // บันทึกชื่อผู้เล่นบนกระดาน
+               
+              }//else{System.out.println(figure_arrlist[num_player].name+"!!"+file+" " +rank );}
+              
+              
+              
+              
+             
               }  
          }else{ Indentity(figure_arrlist[num_player].name);  }  
          
@@ -179,7 +190,7 @@ public void Setboard(){ // setGame
     
  }
  public void Info(String name){System.out.println(name+" ผู้เล่นคนี้ตายแล้วไม่สามารถเดินได้ !!");}
-  public void InfoBoard(){
+ public void InfoBoard(){
     Count_Die();// ลบผู้เล่นที่ตาย
     System.out.println(" ข้อมูลบนการดาน ");
     System.out.print(" จำนวนผู้เล่นฝ่ายดำ  : " + check_player_black);
@@ -206,7 +217,7 @@ public void Setboard(){ // setGame
     for(int i =0;i<check_player;i++){
      String file = Return_Char_Count(figure_arrlist[i].position_file);
      
-     if(figure_arrlist[i].party.equals("black")){
+     if(figure_arrlist[i].party.equals("black") && figure_arrlist[i].identity == true){
         if(figure_arrlist[i].first_turn != true){
         System.out.print(figure_arrlist[i].name+" "+file+figure_arrlist[i].position_rank+" : ");
      } 
@@ -223,7 +234,7 @@ public void Setboard(){ // setGame
     for(int i =0;i<check_player;i++){
      String file = Return_Char_Count(figure_arrlist[i].position_file);
      
-     if(figure_arrlist[i].party.equals("white")){
+     if(figure_arrlist[i].party.equals("white") && figure_arrlist[i].identity == true ){
         if(figure_arrlist[i].first_turn != true){
         System.out.print(figure_arrlist[i].name+" "+file+figure_arrlist[i].position_rank+" : ");
      } 
@@ -236,9 +247,17 @@ public void Setboard(){ // setGame
      }    
     }
   
-    System.out.println();
+    System.out.println("\n");
   }
- 
+ public void Infosuperpositions(String name ,String party ,String name_ ,int file , int rank){
+     String char_count = Return_Char_Count(file);
+ System.out.println(" "+ name+ " ฝ่าย "+ party+ " ไม่สามารถเดินไปยังตำแหน่ง "+char_count+rank+" ของ "+name_+" ฝ่ายเดียวกันได้ !!");
+ System.out.println("  บันทึกตำแหน่งเดิม !!");
+ }
+ public void Event_Info(String name , String name_){
+ System.out.println(" !! Event !!");
+ System.out.println(" !! "+name_+"  ถูกกินโดย " + name);
+ }
  
    public boolean Check_Position(int file,int rank){ // เช็คช่องเดินที่ไม่มี
     if(file >8 || rank > 8 ){
@@ -251,6 +270,44 @@ public void Setboard(){ // setGame
         return false;}
     check_position = true;
     return true;
+   }
+   public boolean Check_Position_Board(Figure figure,int rank, int file){ // เช็คช่องเดินที่ไม่มี
+        
+        //  System.out.println(figure.name);
+        for(int i = 0 ; i< check_player;i++){
+            if(figure.party.equals("white")){
+               if(figure_arrlist[i].position_file == file && figure_arrlist[i].position_rank == rank && figure_arrlist[i].party.equals("white") ){
+                //System.out.println(figure_arrlist[i].name);
+                Infosuperpositions(figure.name,figure.party,figure_arrlist[i].name,figure_arrlist[i].position_file,figure_arrlist[i].position_rank);
+                return false;
+               }else if (figure_arrlist[i].position_file == file && figure_arrlist[i].position_rank == rank && figure_arrlist[i].party.equals("black")){
+                   Event(figure_arrlist[i].position_rank,figure_arrlist[i].position_rank,i);
+                   Event_Info(figure.name,figure_arrlist[i].name);
+                   
+               }
+            }
+            if(figure.party.equals("black")){
+               if(figure_arrlist[i].position_file == file && figure_arrlist[i].position_rank == rank && figure_arrlist[i].party.equals("black")){
+                //System.out.println(figure_arrlist[i].name);
+                Infosuperpositions(figure.name,figure.party,figure_arrlist[i].name,figure_arrlist[i].position_file,figure_arrlist[i].position_rank);
+                return false;
+               }else if (figure_arrlist[i].position_file == file && figure_arrlist[i].position_rank == rank && figure_arrlist[i].party.equals("white")){
+                   Event(figure_arrlist[i].position_rank,figure_arrlist[i].position_rank,i);
+                   Event_Info(figure.name,figure_arrlist[i].name);
+                   
+               }
+            }
+           }
+        
+
+         return true;
+   }
+   public void Event(int rank ,int file,int arr_posi){
+   
+       figure_arrlist[arr_posi].position_file = 99 ;  figure_arrlist[arr_posi].position_rank = 99;
+       figure_arrlist[arr_posi].Identity(false);
+       borad_[rank][file] = "[ "+"  "+" ] ";
+   
    }
    public boolean Excep_Player(boolean t){ // ตรวจสอบการเดินเกินช่อง หรือ ช่องเดียวกัน
         return  excep_player = t; // ถ้าไม่มีข้อผิดพลาด info แสดงได้
