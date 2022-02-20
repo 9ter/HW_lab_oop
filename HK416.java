@@ -20,47 +20,36 @@ public class HK416 {
         ArrayList<Figure> list = new ArrayList<>(); //ใช้ ArrayList ช่วยในการเพิ่มผู้เล่นได้หลายคน
        
         //สร้างกระดาน
-        Board board = new Board(); 
-        //สร้างผู้เล่นกี่คนก็ได้ ห้ามเกินช่องที่มี 64 
-        list.add(new Figure("Mel","black"));
-        list.add(new Figure("Fubuki","black"));
-        list.add(new Figure("Rosenthal","black"));
-        list.add(new Figure("Haato","black"));
-        list.add(new Figure("Aqua","white"));
-        list.add(new Figure("Shion","white"));
-        list.add(new Figure("Ayame","white"));
-        list.add(new Figure("Choco","white"));
-       // list.add(new Figure("Chocos","white"));
-        list.add(new Figure("Subaru","white"));
-        
-        board.Setboard(list); // ส่งชื่อผู้เล่น และ ฝ่าย
-        // board.Move("ชื่อผู่เล่น","file",rank)
-     
-        board.Move("Mel","A",0);
-        board.Move("Fubuki","B",0);
-        board.Move("Rosenthal","C",0);
-        board.Move("Haato","D",0);
-        board.Move("Aqua","A",7);
-        board.Move("Shion","B",7);
-        board.Move("Ayame","C",7);
-        board.Move("Choco","D",7);
-        board.Move("Subaru","E",7);
+        Board board = new Board();         
+        board.Setboard(); // ส่งชื่อผู้เล่น และ ฝ่าย
+        //board.Move("ชื่อผู่เล่น","file")
+      
+        board.Move("Rook1/B", "a3");
+        board.Move("Rook2/B", "f1");
+        board.Move("Rook2/B", "f7");
+
+        board.Move("Pawn6/W", "g7");
+        board.Move("Rook2/B", "h7");
+        board.Move("Rook2/B", "e7");
+        board.Move("Rook2/B", "a7");
+        board.Move("Rook2/B", "g7");
+        board.Move("Rook1/W", "a5");
+        board.Move("Rook1/B", "a1");
+        board.Move("Bishop1/B", "a1");
        
         board.Info();
-        board.Move("Subaru","G",7);
-        board.Move("Aqua","A",0);
-        board.Move("Haato","A",0);
         
         
-       board.Info();
+      
+        
+ 
 
         
         
         
         
         
-        //System.out.println(list.get(0).name +" file " +list.get(0).position_file+" rank " + list.get(0).position_rank);
-
+        
     }
     
 }
